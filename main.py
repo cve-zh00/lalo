@@ -60,10 +60,10 @@ async def get_hash(data: dict):
         result_str = [x.decode('utf-8') for x in result]
         #traemos los datos de cada poliza
         result_str = [redis_client.hgetall(f"poliza:{x}") for x in result_str]
-        print(result_str)
+        result = {"polizas":result_str}
 
 
-        return result_str
+        return result
         
     else:
         result = redis_client.hgetall(key_value)
