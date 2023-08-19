@@ -7,7 +7,6 @@ app = FastAPI()
 # A      adiendo middleware para CORS
 origins = [
     "*"
-
 ]
 
 app.add_middleware(
@@ -77,8 +76,16 @@ async def get_hash(data: dict):
         result = redis_client.smembers(key_value)
         #transformamos a un json
         result_str = [x.decode('utf-8') for x in result]
-        result = {"rutEmpleador":result_str[0],"razonSocialEmpleador":result_str[1]}
+        result = {"rutEmpleador":result_str[1],"razonSocialEmpleador":result_str[0]}
         return result
+    elif "liquidacion" in key_value:
+        result = redis_client.hgetall(key_value)
+        result_str = [{k.decode('utf-8'): v.decode('utf-8') for k, v in result.items()}]
+        result = {"totalLiquidaciones":result_str}
+        return result
+
+
+        
     else:
         result = redis_client.hgetall(key_value)
 
