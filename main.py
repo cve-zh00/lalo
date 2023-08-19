@@ -37,8 +37,7 @@ async def set_hash(data: dict):
     if "productos" in key_value:
         print("entro")
         rut = key_value.replace("productos","").replace(" ","")
-        if not redis_client.exists(f"productos:{rut}"):
-
+        if redis_client.exists(f"productos:{rut}") and data["numeroPoliza"] not in redis_client.lrange(f"productos:{rut}",0,-1):
             redis_client.rpush(f"productos:{rut}",data["numeroPoliza"])
         #comprobamos si no existe la poliza
         if not redis_client.exists(f"poliza:{data['numeroPoliza']}"):
