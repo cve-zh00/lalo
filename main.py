@@ -34,7 +34,8 @@ async def set_hash(data: dict):
     if not data:
         raise HTTPException(status_code=400, detail="The body should have more than just the 'key'.")
 
-    if "productos" in data:
+    if "productos" in key_value:
+        print("entro")
         rut = key_value.replace("productos","").replace(" ","")
         redis_client.rpush(f"productos:{rut}",data["numeroPoliza"])
         redis_client.hmset(f"poliza:{data['numeroPoliza']}",data)
@@ -60,7 +61,7 @@ async def get_hash(data: dict):
         result_str = {x["numeroPoliza"].decode('utf-8'):x for x in result_str}
 
         return result_str
-    
+        
     else:
         result = redis_client.hgetall(key_value)
 
