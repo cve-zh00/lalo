@@ -57,8 +57,8 @@ async def get_hash(data: dict):
         result_str = [x.decode('utf-8') for x in result]
         #traemos los datos de cada poliza
         result_str = [redis_client.hgetall(f"poliza:{x}") for x in result_str]
-        #guardamos los json en un json {"poliza":{json}}
-        result_str = {x["numeroPoliza"].decode('utf-8'):x for x in result_str}
+        print(result_str)
+        
 
         return result_str
         
