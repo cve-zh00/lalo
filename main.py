@@ -60,11 +60,11 @@ async def get_hash(data: dict):
         raise HTTPException(status_code=400, detail="The 'key' is required in the JSON body.")
     if "productos" in key_value:
         rut = key_value.replace("productos","").replace(" ","")
-        result = redis_client.lrange(f"productos:{rut}",0,-1)
+        
         result = redis_client.smembers(f"productos:{rut}")
-
+        #traemos todos los hashers de las polizas
         result_str = [x.decode('utf-8') for x in result]
-
+        #traemos los datos de cada poliza
         result_str = [redis_client.hgetall(f"poliza:{x}") for x in result_str]
         result = {"polizas":result_str}
 
