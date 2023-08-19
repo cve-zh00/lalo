@@ -38,7 +38,10 @@ async def set_hash(data: dict):
         print("entro")
         rut = key_value.replace("productos","").replace(" ","")
         redis_client.rpush(f"productos:{rut}",data["numeroPoliza"])
-        redis_client.hmset(f"poliza:{data['numeroPoliza']}",data)
+        #comprobamos si no existe la poliza
+        if not redis_client.exists(f"poliza:{data['numeroPoliza']}"):
+
+            redis_client.hmset(f"poliza:{data['numeroPoliza']}",data)
     else:
         redis_client.hmset(key_value, data)
 
@@ -58,7 +61,7 @@ async def get_hash(data: dict):
         #traemos los datos de cada poliza
         result_str = [redis_client.hgetall(f"poliza:{x}") for x in result_str]
         print(result_str)
-        
+
 
         return result_str
         
