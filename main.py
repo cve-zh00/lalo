@@ -46,6 +46,9 @@ async def set_hash(data: dict):
             redis_client.hmset(f"poliza:{data['numeroPoliza']}",data)
         else:
             redis_client.hmset(f"poliza:{data['numeroPoliza']}",data)
+    elif "empleador" in key_value:
+        rut = key_value.replace("empleador","").replace(" ","")
+        redis_client.sadd(key_value,data["rutEmpleador"],data["razonSocialEmpleador"])
             
     else:
         redis_client.hmset(key_value, data)
@@ -70,7 +73,11 @@ async def get_hash(data: dict):
 
 
         return result
-        
+    elif "empleador" in key_value:
+        result = redis_client.smembers(key_value)
+        #transformamos a un json
+        result_str = [x.decode('utf-8') for x in result]
+        return result_str
     else:
         result = redis_client.hgetall(key_value)
 
