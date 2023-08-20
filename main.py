@@ -78,9 +78,13 @@ async def get_hash(data: dict):
             raise HTTPException(status_code=404, detail=f"No hash found for key: {key_value}")
         #transformamos a un json
         result_str = [x.decode('utf-8') for x in result]
-        result = {"rutEmpleador":result_str[1],"razonSocialEmpleador":result_str[0]}
-        print(result)
-        return result
+        #el valor que dentro del array sea numerico será el rut
+        if result_str[0].isnumeric():
+            return {"rutEmpleador":result_str[0],"razonSocialEmpleador":result_str[1]}
+        else:
+            return {"rutEmpleador":result_str[1],"razonSocialEmpleador":result_str[0]}
+       
+        
     elif "liquidacion" in key_value:
         result = redis_client.hgetall(key_value)
         result_str = [{k.decode('utf-8'): v.decode('utf-8') for k, v in result.items()}]
