@@ -79,6 +79,7 @@ async def get_hash(data: dict):
         #transformamos a un json
         result_str = [x.decode('utf-8') for x in result]
         result = {"rutEmpleador":result_str[0],"razonSocialEmpleador":result_str[1]}
+        print(result)
         return result
     elif "liquidacion" in key_value:
         result = redis_client.hgetall(key_value)
