@@ -74,6 +74,8 @@ async def get_hash(data: dict):
         return result
     elif "empleador" in key_value:
         result = redis_client.smembers(key_value)
+        if not result:
+            raise HTTPException(status_code=404, detail=f"No hash found for key: {key_value}")
         #transformamos a un json
         result_str = [x.decode('utf-8') for x in result]
         result = {"rutEmpleador":result_str[1],"razonSocialEmpleador":result_str[0]}
