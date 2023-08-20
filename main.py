@@ -78,7 +78,7 @@ async def get_hash(data: dict):
             raise HTTPException(status_code=404, detail=f"No hash found for key: {key_value}")
         #transformamos a un json
         result_str = [x.decode('utf-8') for x in result]
-        result = {"rutEmpleador":result_str[1],"razonSocialEmpleador":result_str[0]}
+        result = {"rutEmpleador":result_str[0],"razonSocialEmpleador":result_str[1]}
         return result
     elif "liquidacion" in key_value:
         result = redis_client.hgetall(key_value)
